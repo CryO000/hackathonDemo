@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { Send, User, MoreVertical, Paperclip, Loader2 } from 'lucide-react';
-import { supabase } from '../services/supabase';
-import { projectId, publicAnonKey } from '../../utils/supabase/info';
-import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -15,78 +12,20 @@ interface Message {
 }
 
 export default function Chat() {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const currentUser = { user_metadata: { name: 'User' } };
 
-  const fetchMessages = async () => {
-    try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-0db36b3b/chat`, {
-        headers: {
-          'Authorization': `Bearer ${publicAnonKey}`
-        }
-      });
-      if (response.ok) {
-        const data = await response.json();
-        if (data.messages) {
-           setMessages(data.messages);
-        }
-      }
-    } catch (error) {
-      console.error('Error fetching messages:', error);
-    }
-  };
-
-  useEffect(() => {
-    // Get current user
-    supabase.auth.getUser().then(({ data }) => {
-      setCurrentUser(data.user);
-    });
-
-    fetchMessages();
-    const interval = setInterval(fetchMessages, 5000); // Poll every 5 seconds
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleSend = async (e: React.FormEvent) => {
+  const handleSend = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!inputValue.trim() || !currentUser) return;
+    if (!inputValue.trim()) return;
 
     setLoading(true);
-    const newMessageContent = inputValue;
-    setInputValue(''); // Optimistic clear
-
-    try {
-      const payload = {
-        user: currentUser.user_metadata?.name || 'User',
-        role: 'Agronomist', // Default role
-        message: newMessageContent,
-        avatar: (currentUser.user_metadata?.name || 'U').charAt(0).toUpperCase()
-      };
-
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-0db36b3b/chat`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${publicAnonKey}`
-        },
-        body: JSON.stringify(payload)
-      });
-
-      if (response.ok) {
-        await fetchMessages(); // Refresh messages
-      } else {
-        toast.error('Failed to send message');
-        setInputValue(newMessageContent); // Revert on failure
-      }
-    } catch (error) {
-      console.error('Error sending message:', error);
-      toast.error('Failed to send message');
-      setInputValue(newMessageContent);
-    } finally {
+    setTimeout(() => {
+      setInputValue('');
       setLoading(false);
-    }
+    }, 300);
   };
 
   return (

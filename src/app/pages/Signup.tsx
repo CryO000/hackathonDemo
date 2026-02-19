@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Globe, User, Lock, Mail, ArrowRight, Loader2 } from 'lucide-react';
-import { toast } from 'sonner';
-import { projectId, publicAnonKey } from '../../utils/supabase/info';
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -14,34 +12,14 @@ export default function Signup() {
     password: ''
   });
 
-  const handleSignup = async (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    try {
-      const response = await fetch(`https://${projectId}.supabase.co/functions/v1/make-server-0db36b3b/signup`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${publicAnonKey}`
-        },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
-      }
-
-      toast.success('Account created successfully! Please sign in.');
+    // Backend removed - just navigate to login
+    setTimeout(() => {
       navigate('/');
-    } catch (error: any) {
-      console.error('Signup error:', error);
-      toast.error(error.message || 'Failed to create account');
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
   return (

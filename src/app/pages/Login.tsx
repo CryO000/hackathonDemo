@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
 import { Globe, User, Lock, ArrowRight, Loader2 } from 'lucide-react';
-import { supabase } from '../services/supabase';
-import { toast } from 'sonner';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,28 +11,14 @@ export default function Login() {
     password: ''
   });
 
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-
-    try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: formData.email,
-        password: formData.password,
-      });
-
-      if (error) {
-        throw error;
-      }
-
-      toast.success('Welcome back!');
+    // Backend removed - just navigate to dashboard
+    setTimeout(() => {
       navigate('/dashboard');
-    } catch (error: any) {
-      console.error('Login error:', error);
-      toast.error(error.message || 'Failed to sign in');
-    } finally {
       setLoading(false);
-    }
+    }, 500);
   };
 
   return (

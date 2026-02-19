@@ -1,5 +1,4 @@
-import { createClient } from '@supabase/supabase-js';
-import { projectId, publicAnonKey } from '../../utils/supabase/info';
+// Backend removed - Supabase service disabled
+// To re-enable, configure environment variables: VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
 
-const supabaseUrl = `https://${projectId}.supabase.co`;
-export const supabase = createClient(supabaseUrl, publicAnonKey);
+export const supabase = null;
