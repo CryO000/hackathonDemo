@@ -22,7 +22,7 @@ export default function Dashboard() {
     <div className="space-y-6">
       <header>
         <h1 className="text-3xl font-bold text-slate-900">Dashboard Overview</h1>
-        <p className="text-slate-500">Real-time soil monitoring powered by Sentinel-1</p>
+        <p className="text-slate-500">Real-time soil monitoring powered by copernicus</p>
       </header>
 
       {/* Top Stats Row */}

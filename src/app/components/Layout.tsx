@@ -37,7 +37,7 @@ export const Layout = ({ children }: LayoutProps) => {
             <Globe className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-xl font-bold tracking-tight">AgriSentinel</h1>
+            <h1 className="text-xl font-bold tracking-tight">Geovance</h1>
             <p className="text-xs text-slate-400">Powered by Copernicus</p>
           </div>
         </div>

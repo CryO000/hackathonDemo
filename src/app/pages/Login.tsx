@@ -46,7 +46,7 @@ export default function Login() {
         </div>
 
         <h2 className="text-3xl font-bold text-center text-white mb-2">Welcome Back</h2>
-        <p className="text-slate-300 text-center mb-8">Access your Copernicus Sentinel-1 Analysis Dashboard</p>
+        <p className="text-slate-300 text-center mb-8">Access your Copernicus Sentinel-2 Analysis Dashboard</p>
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>

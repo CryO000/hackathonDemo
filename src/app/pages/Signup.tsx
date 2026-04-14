@@ -47,7 +47,7 @@ export default function Signup() {
         </div>
 
         <h2 className="text-3xl font-bold text-center text-white mb-2">Create Account</h2>
-        <p className="text-slate-300 text-center mb-8">Join the AgriSentinel network today</p>
+        <p className="text-slate-300 text-center mb-8">Join the Geovance network today</p>
 
         <form onSubmit={handleSignup} className="space-y-4">
            <div>
