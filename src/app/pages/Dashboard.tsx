@@ -2,7 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Droplets, Thermometer, Wind, AlertTriangle, ArrowUpRight } from 'lucide-react';
 import { SoilModel } from '../components/SoilModel';
-import { mockSoilData, suggestionMessages } from '../services/mockData';
+import { mockSoilData } from '../services/mockData';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const data = [
@@ -22,11 +22,11 @@ export default function Dashboard() {
     <div className="space-y-6">
       <header>
         <h1 className="text-3xl font-bold text-slate-900">Dashboard Overview</h1>
-        <p className="text-slate-500">Real-time soil monitoring powered by copernicus</p>
+        <p className="text-slate-500">Real-time soil monitoring and sensor intelligence</p>
       </header>
 
       {/* Top Stats Row */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -34,16 +34,18 @@ export default function Dashboard() {
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Droplets className="h-6 w-6 text-blue-600" />
+            <div className="p-2 bg-yellow-100 rounded-lg">
+              <AlertTriangle className="h-6 w-6 text-yellow-600" />
             </div>
-            <span className="text-xs font-medium text-green-600 flex items-center bg-green-50 px-2 py-1 rounded-full">
-              +2.5% <ArrowUpRight className="h-3 w-3 ml-1" />
+            <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
+              % coverage
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Soil Moisture</h3>
-          <p className="text-2xl font-bold text-slate-900">{currentField.moisture}%</p>
-          <p className="text-xs text-slate-400 mt-1">Optimal Range: 40-60%</p>
+          <h3 className="text-slate-500 text-sm font-medium">Soil Sealing</h3>
+          <p className="text-2xl font-bold text-slate-900">95%</p>
+          <p className="text-xs text-slate-400 mt-1">
+           
+          </p>
         </motion.div>
 
         <motion.div 
@@ -53,16 +55,18 @@ export default function Dashboard() {
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-orange-100 rounded-lg">
-              <Thermometer className="h-6 w-6 text-orange-600" />
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Droplets className="h-6 w-6 text-blue-600" />
             </div>
             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
-              Stable
+              dS/m
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Temperature</h3>
-          <p className="text-2xl font-bold text-slate-900">{currentField.temperature}°C</p>
-          <p className="text-xs text-slate-400 mt-1">Daily Avg: 22°C</p>
+          <h3 className="text-slate-500 text-sm font-medium">Soil Salinity</h3>
+          <p className="text-2xl font-bold text-slate-900">2.1</p>
+          <p className="text-xs text-slate-400 mt-1">
+            
+          </p>
         </motion.div>
 
         <motion.div 
@@ -75,32 +79,15 @@ export default function Dashboard() {
             <div className="p-2 bg-purple-100 rounded-lg">
               <Wind className="h-6 w-6 text-purple-600" />
             </div>
-            <span className="text-xs font-medium text-red-600 flex items-center bg-red-50 px-2 py-1 rounded-full">
-              -5% <ArrowUpRight className="h-3 w-3 ml-1 rotate-180" />
+            <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
+              t/ha/yr
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Nitrogen Levels</h3>
-          <p className="text-2xl font-bold text-slate-900">{currentField.nitrogen} ppm</p>
-          <p className="text-xs text-slate-400 mt-1">Requires Attention</p>
-        </motion.div>
-
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
-        >
-          <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <AlertTriangle className="h-6 w-6 text-yellow-600" />
-            </div>
-             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
-              3 New
-            </span>
-          </div>
-          <h3 className="text-slate-500 text-sm font-medium">Active Alerts</h3>
-          <p className="text-2xl font-bold text-slate-900">3</p>
-          <p className="text-xs text-slate-400 mt-1">View details below</p>
+          <h3 className="text-slate-500 text-sm font-medium">Large-Scale Soil Erosion Risk</h3>
+          <p className="text-2xl font-bold text-slate-900">4.7</p>
+          <p className="text-xs text-slate-400 mt-1">
+           
+          </p>
         </motion.div>
       </div>
 
@@ -158,31 +145,6 @@ export default function Dashboard() {
         </motion.div>
       </div>
 
-       {/* Bottom Section: Recent Suggestions */}
-       <motion.div 
-         initial={{ opacity: 0, y: 20 }}
-         animate={{ opacity: 1, y: 0 }}
-         transition={{ delay: 0.7 }}
-         className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
-       >
-         <h2 className="text-lg font-semibold text-slate-900 mb-4">Recent Suggestions</h2>
-         <div className="space-y-4">
-           {suggestionMessages.slice(0, 2).map((msg) => (
-             <div key={msg.id} className="flex gap-4 p-4 rounded-lg bg-slate-50 border border-slate-100">
-               <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold shrink-0">
-                 {msg.avatar}
-               </div>
-               <div>
-                 <div className="flex items-baseline gap-2">
-                   <h4 className="font-semibold text-slate-900">{msg.user}</h4>
-                   <span className="text-xs text-slate-500">{msg.role} • {msg.timestamp}</span>
-                 </div>
-                 <p className="text-slate-600 text-sm mt-1">{msg.message}</p>
-               </div>
-             </div>
-           ))}
-         </div>
-       </motion.div>
 
     </div>
   );

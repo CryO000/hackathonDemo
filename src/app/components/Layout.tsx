@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, FileBarChart, Microscope, MessageSquare, LogOut, Globe, User } from 'lucide-react';
+import { Link, useLocation, useNavigate, Outlet } from 'react-router-dom';
+import { LayoutDashboard, FileBarChart, PhoneCall, LogOut, Globe, User } from 'lucide-react';
 import { clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -8,11 +8,7 @@ export function cn(...inputs: (string | undefined | null | false)[]) {
   return twMerge(clsx(inputs));
 }
 
-interface LayoutProps {
-  children: React.ReactNode;
-}
-
-export const Layout = ({ children }: LayoutProps) => {
+export const Layout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [user] = useState<any>({ email: 'user@example.com', user_metadata: { name: 'User' } });
@@ -24,21 +20,23 @@ export const Layout = ({ children }: LayoutProps) => {
   const navItems = [
     { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
     { name: 'Analysis', path: '/analysis', icon: FileBarChart },
-    { name: 'Research', path: '/research', icon: Microscope },
-    { name: 'Chat Room', path: '/chat', icon: MessageSquare },
+    { name: 'Voice Call', path: '/voice', icon: PhoneCall },
   ];
 
   return (
     <div className="flex h-screen bg-slate-50 text-slate-900">
       {/* Sidebar */}
       <aside className="w-64 bg-slate-900 text-white flex flex-col shadow-xl">
-        <div className="p-6 border-b border-slate-700 flex items-center gap-3">
-          <div className="bg-green-500 p-2 rounded-full">
+        <div
+          onClick={() => navigate('/settings')}
+          className="cursor-pointer p-6 border-b border-slate-700 flex flex-col gap-3 hover:bg-slate-800/80 transition-colors"
+        >
+          <div className="bg-green-500 p-2 rounded-full inline-flex">
             <Globe className="h-6 w-6 text-white" />
           </div>
           <div>
             <h1 className="text-xl font-bold tracking-tight">Geovance</h1>
-            <p className="text-xs text-slate-400">Powered by Copernicus</p>
+            <p className="text-xs text-slate-400">Subscription: PRO</p>
           </div>
         </div>
 
@@ -88,7 +86,7 @@ export const Layout = ({ children }: LayoutProps) => {
       {/* Main Content */}
       <main className="flex-1 overflow-y-auto bg-slate-50">
         <div className="max-w-7xl mx-auto p-8">
-           {children}
+           <Outlet />
         </div>
       </main>
     </div>

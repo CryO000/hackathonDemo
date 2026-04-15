@@ -1,14 +1,24 @@
-import { LucideIcon, Droplets, Thermometer, Wind, Sun, Activity, Sprout } from 'lucide-react';
+export interface SensorReading {
+  nutrient: string;
+  sensorId: string;
+  current: number;
+  target: number;
+  status: string;
+}
 
 export interface SoilData {
   id: string;
   location: string;
   moisture: number; // Percentage
+  surfaceMoisture: number; // Top layer
+  rootZoneMoisture: number; // Deeper layer
   temperature: number; // Celsius
   nitrogen: number; // ppm
   phosphorus: number; // ppm
   potassium: number; // ppm
   ph: number;
+  freezeState: string;
+  sensorReadings: SensorReading[];
   lastUpdated: string;
 }
 
@@ -17,33 +27,66 @@ export const mockSoilData: SoilData[] = [
     id: 'field-1',
     location: 'North Sector',
     moisture: 45,
+    surfaceMoisture: 48,
+    rootZoneMoisture: 39,
     temperature: 22.5,
     nitrogen: 120,
     phosphorus: 45,
     potassium: 150,
     ph: 6.5,
+    freezeState: 'Thawing',
+    sensorReadings: [
+      { nutrient: 'Nitrogen', sensorId: 'N-01', current: 120, target: 150, status: 'Active' },
+      { nutrient: 'Phosphorus', sensorId: 'P-02', current: 45, target: 100, status: 'Active' },
+      { nutrient: 'Potassium', sensorId: 'K-03', current: 150, target: 160, status: 'Ready' },
+      { nutrient: 'Magnesium', sensorId: 'MG-04', current: 92, target: 100, status: 'Active' },
+      { nutrient: 'Calcium', sensorId: 'CA-05', current: 98, target: 110, status: 'Active' },
+      { nutrient: 'Sulfur', sensorId: 'S-06', current: 73, target: 90, status: 'Active' },
+    ],
     lastUpdated: '2023-10-27T10:00:00Z',
   },
   {
     id: 'field-2',
     location: 'East Sector',
     moisture: 38,
+    surfaceMoisture: 41,
+    rootZoneMoisture: 33,
     temperature: 24.1,
     nitrogen: 110,
     phosphorus: 40,
     potassium: 140,
     ph: 6.8,
+    freezeState: 'Normal',
+    sensorReadings: [
+      { nutrient: 'Nitrogen', sensorId: 'N-01', current: 110, target: 150, status: 'Active' },
+      { nutrient: 'Phosphorus', sensorId: 'P-02', current: 40, target: 100, status: 'Active' },
+      { nutrient: 'Potassium', sensorId: 'K-03', current: 140, target: 160, status: 'Active' },
+      { nutrient: 'Magnesium', sensorId: 'MG-04', current: 88, target: 100, status: 'Active' },
+      { nutrient: 'Calcium', sensorId: 'CA-05', current: 95, target: 110, status: 'Active' },
+      { nutrient: 'Sulfur', sensorId: 'S-06', current: 70, target: 90, status: 'Active' },
+    ],
     lastUpdated: '2023-10-27T10:15:00Z',
   },
   {
     id: 'field-3',
     location: 'South Sector',
     moisture: 52,
+    surfaceMoisture: 56,
+    rootZoneMoisture: 48,
     temperature: 21.8,
     nitrogen: 130,
     phosphorus: 50,
     potassium: 160,
     ph: 6.2,
+    freezeState: 'Frozen',
+    sensorReadings: [
+      { nutrient: 'Nitrogen', sensorId: 'N-01', current: 130, target: 150, status: 'Active' },
+      { nutrient: 'Phosphorus', sensorId: 'P-02', current: 50, target: 100, status: 'Active' },
+      { nutrient: 'Potassium', sensorId: 'K-03', current: 160, target: 160, status: 'Ready' },
+      { nutrient: 'Magnesium', sensorId: 'MG-04', current: 96, target: 100, status: 'Active' },
+      { nutrient: 'Calcium', sensorId: 'CA-05', current: 102, target: 110, status: 'Active' },
+      { nutrient: 'Sulfur', sensorId: 'S-06', current: 78, target: 90, status: 'Active' },
+    ],
     lastUpdated: '2023-10-27T10:30:00Z',
   },
 ];

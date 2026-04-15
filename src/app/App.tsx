@@ -5,8 +5,8 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
 import Analysis from './pages/Analysis';
-import Research from './pages/Research';
-import Chat from './pages/Chat';
+import Settings from './pages/Settings';
+import VoiceCall from './pages/VoiceCall';
 import { Layout } from './components/Layout';
 
 const App = () => {
@@ -16,30 +16,14 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-        
-        {/* Authenticated Routes */}
-        <Route path="/dashboard" element={
-          <Layout>
-            <Dashboard />
-          </Layout>
-        } />
-        <Route path="/analysis" element={
-          <Layout>
-            <Analysis />
-          </Layout>
-        } />
-        <Route path="/research" element={
-          <Layout>
-            <Research />
-          </Layout>
-        } />
-        <Route path="/chat" element={
-          <Layout>
-            <Chat />
-          </Layout>
-        } />
 
-        {/* Catch all redirect */}
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/analysis" element={<Analysis />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/voice" element={<VoiceCall />} />
+        </Route>
+
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
