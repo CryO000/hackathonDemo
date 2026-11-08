@@ -99,6 +99,16 @@ alembic upgrade head
 
 Do not run Alembic's initial migration after the app has already auto-created all the tables in the same database; use a fresh database or remove the automatic `create_all` startup when adopting migrations as the source of truth.
 
+## Run backend tests
+
+From inside `backend/` with the virtual environment active:
+
+```bash
+pytest
+```
+
+The current tests cover Pydantic request validation. Add database-backed integration tests when you configure a dedicated test database.
+
 ## API endpoints
 
 All data endpoints use the `/api/v1` prefix.
