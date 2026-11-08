@@ -103,8 +103,12 @@ async def seed() -> None:
         print("Created one demo farm, three fields, 33 sensors, and 33 readings.")
 
 
-if __name__ == "__main__":
+async def main() -> None:
     try:
-        asyncio.run(seed())
+        await seed()
     finally:
-        asyncio.run(engine.dispose())
+        await engine.dispose()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
