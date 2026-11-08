@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Droplets, Thermometer, Wind, AlertTriangle, ArrowUpRight } from 'lucide-react';
 import { SoilModel } from '../components/SoilModel';
 import { mockSoilData } from '../services/mockData';
+import { useSoilDashboard } from '../hooks/useSoilDashboard';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 
 const data = [
@@ -16,7 +17,8 @@ const data = [
 ];
 
 export default function Dashboard() {
-  const currentField = mockSoilData[0]; // Displaying first field for overview
+  const { soilData } = useSoilDashboard();
+  const currentField = soilData[0] ?? mockSoilData[0];
 
   return (
     <div className="space-y-6">
@@ -27,7 +29,7 @@ export default function Dashboard() {
 
       {/* Top Stats Row */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
@@ -43,12 +45,10 @@ export default function Dashboard() {
           </div>
           <h3 className="text-slate-500 text-sm font-medium">Soil Sealing</h3>
           <p className="text-2xl font-bold text-slate-900">95%</p>
-          <p className="text-xs text-slate-400 mt-1">
-           
-          </p>
+          <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
@@ -64,12 +64,10 @@ export default function Dashboard() {
           </div>
           <h3 className="text-slate-500 text-sm font-medium">Soil Salinity</h3>
           <p className="text-2xl font-bold text-slate-900">2.1</p>
-          <p className="text-xs text-slate-400 mt-1">
-            
-          </p>
+          <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
 
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
@@ -85,16 +83,13 @@ export default function Dashboard() {
           </div>
           <h3 className="text-slate-500 text-sm font-medium">Large-Scale Soil Erosion Risk</h3>
           <p className="text-2xl font-bold text-slate-900">4.7</p>
-          <p className="text-xs text-slate-400 mt-1">
-           
-          </p>
+          <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
       </div>
 
       {/* Middle Section: 3D Model & Chart */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* 3D Model Card */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.5 }}
@@ -102,19 +97,18 @@ export default function Dashboard() {
         >
           <h2 className="text-lg font-semibold text-slate-900 mb-4">Soil Structure Visualization</h2>
           <div className="flex-1 min-h-[300px] bg-slate-900 rounded-lg overflow-hidden">
-             <SoilModel />
+            <SoilModel />
           </div>
           <p className="text-sm text-slate-500 mt-4 text-center">
             Interactive 3D representation of field {currentField.id}
           </p>
         </motion.div>
 
-        {/* Chart Card */}
-        <motion.div 
-           initial={{ opacity: 0, scale: 0.95 }}
-           animate={{ opacity: 1, scale: 1 }}
-           transition={{ delay: 0.6 }}
-           className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200"
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6 }}
+          className="lg:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200"
         >
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold text-slate-900">Moisture Trends (7 Days)</h2>
@@ -135,17 +129,13 @@ export default function Dashboard() {
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#e2e8f0" />
                 <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: '#64748b'}} />
                 <YAxis axisLine={false} tickLine={false} tick={{fill: '#64748b'}} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                />
+                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
                 <Area type="monotone" dataKey="moisture" stroke="#3b82f6" strokeWidth={3} fillOpacity={1} fill="url(#colorMoisture)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
       </div>
-
-
     </div>
   );
 }
