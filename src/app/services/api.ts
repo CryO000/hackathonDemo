@@ -104,7 +104,8 @@ export const agricultureApi = {
     Object.entries(filters).forEach(([key, value]) => {
       if (value !== undefined) query.set(key, String(value));
     });
-    const suffix = query.size ? `?${query.toString()}` : "";
+    const queryString = query.toString();
+    const suffix = queryString ? `?${queryString}` : "";
     return request<SensorReading[]>(`/readings${suffix}`);
   },
   createReading: (reading: Omit<SensorReading, "id">) =>
