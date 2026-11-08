@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Droplets, Thermometer, Wind, AlertTriangle, ArrowUpRight } from 'lucide-react';
+import { Droplets, Thermometer, FlaskConical } from 'lucide-react';
 import { SoilModel } from '../components/SoilModel';
 import { mockSoilData } from '../services/mockData';
 import { useSoilDashboard } from '../hooks/useSoilDashboard';
@@ -36,15 +36,15 @@ export default function Dashboard() {
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <AlertTriangle className="h-6 w-6 text-yellow-600" />
+            <div className="p-2 bg-amber-100 rounded-lg">
+              <Thermometer className="h-6 w-6 text-amber-600" />
             </div>
             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
-              % coverage
+              %
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Soil Sealing</h3>
-          <p className="text-2xl font-bold text-slate-900">95%</p>
+          <h3 className="text-slate-500 text-sm font-medium">Soil Moisture</h3>
+          <p className="text-2xl font-bold text-slate-900">{currentField.moisture.toFixed(1)}%</p>
           <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
 
@@ -59,11 +59,11 @@ export default function Dashboard() {
               <Droplets className="h-6 w-6 text-blue-600" />
             </div>
             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
-              dS/m
+              °C
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Soil Salinity</h3>
-          <p className="text-2xl font-bold text-slate-900">2.1</p>
+          <h3 className="text-slate-500 text-sm font-medium">Soil Temperature</h3>
+          <p className="text-2xl font-bold text-slate-900">{currentField.temperature.toFixed(1)}°C</p>
           <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
 
@@ -75,14 +75,14 @@ export default function Dashboard() {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="p-2 bg-purple-100 rounded-lg">
-              <Wind className="h-6 w-6 text-purple-600" />
+              <FlaskConical className="h-6 w-6 text-purple-600" />
             </div>
             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
-              t/ha/yr
+              pH
             </span>
           </div>
-          <h3 className="text-slate-500 text-sm font-medium">Large-Scale Soil Erosion Risk</h3>
-          <p className="text-2xl font-bold text-slate-900">4.7</p>
+          <h3 className="text-slate-500 text-sm font-medium">Soil pH</h3>
+          <p className="text-2xl font-bold text-slate-900">{currentField.ph.toFixed(1)}</p>
           <p className="text-xs text-slate-400 mt-1"></p>
         </motion.div>
       </div>
