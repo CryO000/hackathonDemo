@@ -10,10 +10,10 @@ export interface Field {
   farm_id: number;
   name: string;
   area_hectares?: number | null;
-  boundary_geojson?: {
-    type: "MultiPolygon";
-    coordinates: number[][][][];
-  } | null;
+  boundary_geojson?:
+    | { type: "Polygon"; coordinates: number[][][] }
+    | { type: "MultiPolygon"; coordinates: number[][][][] }
+    | null;
 }
 
 export interface Sensor {
