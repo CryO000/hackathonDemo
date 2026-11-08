@@ -5,27 +5,61 @@ Python backend for the Vite + React agriculture dashboard in this repository.
 ## Stack
 
 - **FastAPI**: REST endpoints and interactive OpenAPI docs
-- **PostgreSQL**: relational data storage (you can use the existing Supabase PostgreSQL project)
+- **PostgreSQL**: relational data storage (the existing Supabase PostgreSQL project can be reused)
 - **PostGIS**: real Polygon/MultiPolygon field boundaries in SRID 4326
 - **SQLAlchemy 2 + asyncpg**: async database access
 - **Pydantic**: request and response validation
-- **Alembic**: database migration tooling
+- **Alembic**: migration tooling
+- **Docker Compose**: local API + PostGIS setup
 
-Redis, Celery, and MQTT are intentionally not enabled yet: add them when the app needs queued satellite processing, long-running jobs, or live device telemetry.
+Redis, Celery, and MQTT are intentionally not enabled yet. Add them when you need queued satellite processing, long-running analysis, or live device telemetry.
 
-## 1. Prepare the database
+## Option A: Run everything with Docker
 
-Use PostgreSQL locally or the PostgreSQL database already associated with your Supabase project. In Supabase, open **SQL Editor** and run:
+From the repository root:
+
+```bash
+docker compose up --build
+```
+
+This starts PostGIS on port 5432 and FastAPI on port 8000. The API creates its initial tables when it starts.
+
+- API: http://localhost:8000
+- Interactive Swagger docs: http://localhost:8000/docs
+- Health check: http://localhost:8000/health
+
+To stop the services:
+
+```bash
+docker compose down
+```
+
+To also remove the local database volume:
+
+```bash
+docker compose down -v
+```
+
+## Option B: Use your existing Supabase PostgreSQL
+
+In Supabase, open **SQL Editor** and run:
 
 ```sql
 CREATE EXTENSION IF NOT EXISTS postgis;
 ```
 
-PostGIS stores field boundaries as actual geographic geometry rather than plain text.
+Get the connection string from **Project Settings → Database → Connection string**. Set it in `backend/.env` using the async SQLAlchemy driver:
 
-## 2. Install the backend
+```text
+DATABASE_URL=postgresql+asyncpg://USER:PASSWORD@HOST:PORT/DATABASE
+CORS_ORIGINS=http://localhost:5173
+APP_NAME=Agriculture Data API
+DEBUG=true
+```
 
-From the repository root:
+Follow the SSL requirements shown by Supabase for your selected direct or pooler connection. Keep this database password server-side; never place it in a `VITE_...` variable or commit `.env`.
+
+Then install and run the backend locally:
 
 ```bash
 cd backend
@@ -38,31 +72,18 @@ python -m venv .venv
 source .venv/bin/activate
 
 pip install -r requirements.txt
-```
-
-Copy `.env.example` to `.env`. Set `DATABASE_URL` to your PostgreSQL connection string. Keep the database password server-side; do not put it in a `VITE_...` frontend variable or commit `.env`.
-
-For a Supabase database, get the connection string from **Project Settings → Database → Connection string**. Use the async SQLAlchemy driver format:
-
-```text
-postgresql+asyncpg://USER:PASSWORD@HOST:PORT/DATABASE
-```
-
-Your database/provider may require SSL parameters. Follow the connection details shown by Supabase for your chosen direct or pooler connection.
-
-## 3. Start FastAPI
-
-Run from inside `backend/`:
-
-```bash
 uvicorn app.main:app --reload
 ```
 
-- API root: http://localhost:8000
-- Interactive Swagger docs: http://localhost:8000/docs
-- Health check: http://localhost:8000/health
+The app currently creates missing tables at startup for quick hackathon development. Alembic is configured for schema migrations; before switching the project to migration-managed deployments, generate and review an initial migration against an empty database:
 
-The app currently creates missing tables at startup for quick local hackathon development. Use Alembic migrations for schema changes and before deployment.
+```bash
+cd backend
+alembic revision --autogenerate -m "initial schema"
+alembic upgrade head
+```
+
+Do not run Alembic's initial migration after the app has already auto-created all the tables in the same database; use a fresh database or remove the automatic `create_all` startup when adopting migrations as the source of truth.
 
 ## API endpoints
 
@@ -75,7 +96,7 @@ All data endpoints use the `/api/v1` prefix.
 | GET, POST | `/fields` | List or create fields; optional `farm_id` filter |
 | GET, POST | `/sensors` | List or register sensors; optional `field_id` filter |
 | GET, POST | `/readings` | Query or insert timestamped measurements |
-| GET | `/dashboard/soil` | Latest measurements in the existing React soil-dashboard shape |
+| GET | `/dashboard/soil` | Latest sensor measurements in the React dashboard's data shape |
 
 Reading query filters: `sensor_id`, `start`, `end`, and `limit` (1–1000).
 
@@ -118,13 +139,13 @@ Send a GeoJSON Polygon or MultiPolygon in WGS84 longitude/latitude coordinates a
 
 ## Connect the Vite frontend
 
-At the repository root, copy `.env.example` to `.env.local` (or create that file) and set:
+At the repository root, copy `.env.example` to `.env.local` and set:
 
 ```env
 VITE_API_BASE_URL=http://localhost:8000/api/v1
 ```
 
-A ready-to-use TypeScript client is in `src/app/services/api.ts`. For example:
+A typed API client is available in `src/app/services/api.ts`:
 
 ```ts
 import { agricultureApi } from "./api";
@@ -133,7 +154,7 @@ const farms = await agricultureApi.listFarms();
 const soil = await agricultureApi.getSoilDashboard();
 ```
 
-The current pages still use `mockSoilData`; this backend and API client are the data layer to connect next, without changing the dashboard UI unexpectedly.
+The current pages still use `mockSoilData`. The backend and API client are in place; the next frontend step is replacing those mock-data imports with calls to `agricultureApi.getSoilDashboard()`.
 
 ## Tables
 
