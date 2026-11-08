@@ -64,14 +64,15 @@ async def get_soil_dashboard(db: AsyncSession = Depends(get_db)):
             latest_values[dashboard_key] = reading.value
             timestamps.append(reading.recorded_at)
 
-            sensor_readings.append({
-                "nutrient": sensor.sensor_type,
-                "sensorId": sensor.sensor_code,
-                "current": reading.value,
-                "target": sensor.target_value if sensor.target_value is not None else reading.value,
-                "unit": sensor.unit,
-                "status": "Active" if sensor.is_active else "Inactive",
-            })
+            if dashboard_key in {"nitrogen", "phosphorus", "potassium", "magnesium", "calcium", "sulfur"}:
+                sensor_readings.append({
+                    "nutrient": sensor.sensor_type.title(),
+                    "sensorId": sensor.sensor_code,
+                    "current": reading.value,
+                    "target": sensor.target_value if sensor.target_value is not None else reading.value,
+                    "unit": sensor.unit,
+                    "status": "Active" if sensor.is_active else "Inactive",
+                })
 
         if "moisture" not in latest_values:
             layers = [
