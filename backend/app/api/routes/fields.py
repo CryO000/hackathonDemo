@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from geoalchemy2.shape import from_shape, to_shape
+from shapely.errors import ShapelyError
 from shapely.geometry import MultiPolygon, mapping, shape as make_shape
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -43,7 +44,7 @@ async def create_field(payload: FieldCreate, db: AsyncSession = Depends(get_db))
     if payload.boundary_geojson is not None:
         try:
             geometry = make_shape(payload.boundary_geojson)
-        except (TypeError, ValueError, KeyError):
+        except (TypeError, ValueError, KeyError, ShapelyError):
             raise HTTPException(status_code=422, detail="Invalid GeoJSON geometry")
         if geometry.geom_type == "Polygon":
             geometry = MultiPolygon([geometry])
