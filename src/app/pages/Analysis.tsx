@@ -3,9 +3,11 @@ import { motion } from 'motion/react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis } from 'recharts';
 import { Map, Layers, Download, Calendar, Thermometer, Droplets, Sparkles, AlertTriangle } from 'lucide-react';
 import { mockSoilData } from '../services/mockData';
+import { useSoilDashboard } from '../hooks/useSoilDashboard';
 
 export default function Analysis() {
-  const currentField = mockSoilData[0];
+  const { soilData } = useSoilDashboard();
+  const currentField = soilData[0] ?? mockSoilData[0];
   const nutrientData = currentField.sensorReadings.map((reading) => ({
     subject: reading.nutrient,
     A: reading.current,
