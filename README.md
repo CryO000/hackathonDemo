@@ -1,11 +1,24 @@
+# Agriculture data analysis app
 
-  # Agriculture data analysis app
+This repository contains the Vite + React agriculture monitoring frontend and a Python FastAPI backend.
 
-  This is a code bundle for Agriculture data analysis app. The original project is available at https://www.figma.com/design/AG8iWn7Zxh0Ml4N5Tt28bV/Agriculture-data-analysis-app.
+## Frontend
 
-  ## Running the code
+```bash
+npm install
+npm run dev
+```
 
-  Run `npm i` to install the dependencies.
+## Backend
 
-  Run `npm run dev` to start the development server.
-  
+See **[backend/README.md](backend/README.md)** for setup, API endpoints, PostGIS, Supabase PostgreSQL connection, Alembic, and Docker instructions.
+
+Quick local start from the repository root (requires Docker):
+
+```bash
+docker compose up --build
+```
+
+- Frontend: http://localhost:5173
+- Backend API: http://localhost:8000
+- API documentation: http://localhost:8000/docs
