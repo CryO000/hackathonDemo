@@ -22,7 +22,15 @@ From the repository root:
 docker compose up --build
 ```
 
-This starts PostGIS on port 5432 and FastAPI on port 8000. The API creates its initial tables when it starts.
+This starts PostGIS on port 5432 and FastAPI on port 8000. PostGIS is enabled by the init script and the API creates its initial tables when it starts.
+
+Seed the sample farm data so the Dashboard and Analysis pages can load live values:
+
+```bash
+docker compose exec api python -m scripts.seed_demo
+```
+
+The seed command is safe to run more than once; it skips creation when the demo farm already exists.
 
 - API: http://localhost:8000
 - Interactive Swagger docs: http://localhost:8000/docs
@@ -73,6 +81,12 @@ source .venv/bin/activate
 
 pip install -r requirements.txt
 uvicorn app.main:app --reload
+```
+
+In a second terminal, from the `backend/` directory, seed the demo records:
+
+```bash
+python -m scripts.seed_demo
 ```
 
 The app currently creates missing tables at startup for quick hackathon development. Alembic is configured for schema migrations; before switching the project to migration-managed deployments, generate and review an initial migration against an empty database:
@@ -154,7 +168,7 @@ const farms = await agricultureApi.listFarms();
 const soil = await agricultureApi.getSoilDashboard();
 ```
 
-The current pages still use `mockSoilData`. The backend and API client are in place; the next frontend step is replacing those mock-data imports with calls to `agricultureApi.getSoilDashboard()`.
+The Dashboard and Analysis pages now call the `/dashboard/soil` endpoint through `useSoilDashboard`. They continue to show the existing `mockSoilData` sample if the API is unavailable or the database has no fields. Once you seed demo data or register your own farm and sensors, the pages switch to live backend values.
 
 ## Tables
 
