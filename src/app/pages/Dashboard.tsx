@@ -36,8 +36,8 @@ export default function Dashboard() {
           className="bg-white p-6 rounded-xl shadow-sm border border-slate-200"
         >
           <div className="flex items-center justify-between mb-4">
-            <div className="p-2 bg-amber-100 rounded-lg">
-              <Thermometer className="h-6 w-6 text-amber-600" />
+            <div className="p-2 bg-blue-100 rounded-lg">
+              <Droplets className="h-6 w-6 text-blue-600" />
             </div>
             <span className="text-xs font-medium text-slate-600 flex items-center bg-slate-100 px-2 py-1 rounded-full">
               %
